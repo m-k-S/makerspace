@@ -10,7 +10,8 @@
 # PLEASE do not open a web interface for SQL queries for any reason
 # -----------------------------------------------------------
 
-from time import sleep
+from datetime import datetime
+import sys
 from cards import *
 from manage import *
 
@@ -28,7 +29,7 @@ from smartcard.util import toHexString
 
 # Establish connection to Makerspace MySQL database;
 # This database should have the name 'makerspace',
-# a table named 'users', and a table named 'log'
+# a table named 'users', and a table named 'logs'
 cnx = mysql.connector.connect(user='makerspace', password='',
                                host='127.0.0.1',
                                database='makerspace')
@@ -44,3 +45,5 @@ IDMonitor.addObserver(IDObserver)
 
 # if __name__ == '__main__':
     # Do something (pending UI development)
+
+    # On: SIGINT - cnx.close()
