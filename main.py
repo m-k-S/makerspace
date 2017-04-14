@@ -34,9 +34,13 @@ from smartcard.util import toHexString
 # Establish connection to Makerspace MySQL database;
 # This database should have the name 'makerspace',
 # a table named 'users', and a table named 'logs'
-#cnx = mysql.connector.connect(user='makerspace', password='',
-#                               host='127.0.0.1',
-#                               database='makerspace')
+userCnx = mysql.connector.connect(user='makerspace', password='',
+                              host='127.0.0.1',
+                              database='users')
+
+logsCnx = mysql.connector.connect(user='makerspace', password='',
+                           host='127.0.0.1',
+                           database='logs')
 
 # Initialize ID monitor -- IDObserver is an instance of
 # IDReader, defined in cards.py, which has a callable
@@ -104,7 +108,7 @@ E1.pack(side = LEFT, expand = 1, fill = "x")
 
 #Get and Set Buttons
 B1 = Button(permFrame1, text="Get", command = getData, padx = 5, pady = 5)
-B2 = Button(permFrame2, text="Set", command = setData, padx = 5, pady = 5)    
+B2 = Button(permFrame2, text="Set", command = setData, padx = 5, pady = 5)
 B1.pack(side = RIGHT)
 B2.pack(side = RIGHT)
 
@@ -169,7 +173,7 @@ while True:
 		T8.config(state = DISABLED)
 		T9.config(state = DISABLED)
 		T10.config(state = DISABLED)
-		T11.config(state = DISABLED) 
-		flag = 0   
+		T11.config(state = DISABLED)
+		flag = 0
 
 # On: SIGINT - cnx.close()

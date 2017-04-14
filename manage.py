@@ -56,16 +56,16 @@ def change_permissions(uid, field, perm, cnx):
 
 # Function for logging a user entry into the Makerspace
 # To call this function:
-#   Pass the UID of the card and the MySQL db connection
-def log_entry(uid, cnx):
+#   Pass the UID of the card and the MySQL db connection for the database "logs"
+def log_entry(uid, uni, cnx):
 
     try:
         cursor = cnx.cursor()
-        LOG_ADD = ("INSERT INTO logs "
-                  "(uid, timestamp) "
-                  "VALUES (%s, %s)")
+        LOG_ADD = ("INSERT INTO entries "
+                  "(uid, uni, timestamp) "
+                  "VALUES (%s, %s, %s)")
 
-        LOG_DATA = (uid, datetime.now().strftime("%A, %d %B %Y %I:%M%p"))
+        LOG_DATA = (uid, uni, datetime.now().strftime("%A, %d %B %Y %I:%M%p"))
 
         res = cursor.execute(LOG_ADD, LOG_DATA)
         cnx.commit()
@@ -95,4 +95,4 @@ def query_card(uid, field, cnx):
         return res
     except:
         e = sys.exc_info()[0]
-        return e    
+        return e
