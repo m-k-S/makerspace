@@ -34,13 +34,13 @@ from smartcard.util import toHexString
 # Establish connection to Makerspace MySQL database;
 # This database should have the name 'makerspace',
 # a table named 'users', and a table named 'logs'
-userCnx = mysql.connector.connect(user='makerspace', password='',
-                              host='127.0.0.1',
+userCnx = mysql.connector.connect(user='userlogin', password='6wQ89Sm3CNYt4vX9',
+                              host='make.seas.columbia.edu',
                               database='users')
 
-logsCnx = mysql.connector.connect(user='makerspace', password='',
-                           host='127.0.0.1',
-                           database='logs')
+#logsCnx = mysql.connector.connect(user='userlogin', password='6wQ89Sm3CNYt4vX9',
+#                           host='make.seas.columbia.edu',
+#                           database='logs')
 
 # Initialize ID monitor -- IDObserver is an instance of
 # IDReader, defined in cards.py, which has a callable
@@ -51,18 +51,43 @@ IDObserver = IDReader()
 IDMonitor.addObserver(IDObserver)
 
 def getData():
-     return 0
+     uni.set(query_card(uid,'uni',userCnx))
+     user.set(query_card(uid,'user',userCnx))
+     printer.set(query_card(uid,'printer',userCnx))
+     laser.set(query_card(uid,'laser',userCnx))
+     mill.set(query_card(uid,'mill',userCnx))
+     vinyl.set(query_card(uid,'vinyl',userCnx))
+     solder.set(query_card(uid,'solder',userCnx))
+     drill.set(query_card(uid,'drill',userCnx))
+     sewing.set(query_card(uid,'sewing',userCnx))
+     osc.set(query_card(uid,'oscope',userCnx))
+     super.set(query_card(uid,'super',userCnx))
+     ban.set(query_card(uid,'banned',userCnx))
+
 def setData():
-     return 0
-def printa():
-     print unlocked
+     change_permissions(uid,'user',user.get(),userCnx)
+     change_permissions(uid,'printer',printer.get(),userCnx)
+     change_permissions(uid,'laser',laser.get(),userCnx)
+     change_permissions(uid,'mill',mill.get(),userCnx)
+     change_permissions(uid,'vinyl',vinyl.get(),userCnx)
+     change_permissions(uid,'solder',solder.get(),userCnx)
+     change_permissions(uid,'drill',drill.get(),userCnx)
+     change_permissions(uid,'sewing',sewing.get(),userCnx)
+     change_permissions(uid,'oscope',osc.get(),userCnx)
+     change_permissions(uid,'super',super.get(),userCnx)
+     change_permissions(uid,'banned',ban.get(),userCnx)
+		
 
 #Main Window
 window = Tkinter.Tk()
 window.title("Card Swipe System")
 
 #Variables for UI
+swipe = 0
+uid = StringVar()
 uni = StringVar()
+firstname = StringVar()
+lastname = StringVar()
 user = BooleanVar()
 printer = BooleanVar()
 laser = BooleanVar()
@@ -84,11 +109,33 @@ swiper = ttk.Frame(nb)
 superUserAuth = ttk.Frame(nb)
 permissions = ttk.Frame(nb)
 
+#Adding Users
+addFrame = Frame(swiper)
+addFrame.pack(side = TOP, expand = 1, fill = "both")
+B1 = Label(addFrame, text = "UID")
+C1 = Entry(addFrame, textvariable = uid)
+B2 = Label(addFrame, text = "UNI")
+C2 = Entry(addFrame, textvariable = uni)
+B3 = Label(addFrame, text = "First Name")
+C3 = Entry(addFrame, textvariable = firstname)
+B4 = Label(addFrame, text = "Last Name")
+C4 = Entry(addFrame, textvariable = lastname)
+A0 = Button(addFrame, text = "Add User", command = add_user(uid.get(),uni.get(),lastname.get(),firstname.get(),userCnx), padx = 5, pady = 5)
+B1.pack(side = TOP, expand = 1, fill = "both")
+C1.pack(side = TOP, expand = 1, fill = "both")
+B2.pack(side = TOP, expand = 1, fill = "both")
+C2.pack(side = TOP, expand = 1, fill = "both")
+B3.pack(side = TOP, expand = 1, fill = "both")
+C3.pack(side = TOP, expand = 1, fill = "both")
+B4.pack(side = TOP, expand = 1, fill = "both")
+C4.pack(side = TOP, expand = 1, fill = "both")
+A0.pack(side = TOP, expand = 1, fill = "both")
+
 #Superuser Authentication Frame
 authFrame = Frame(superUserAuth)
 authFrame.pack(side = TOP, expand = 1, fill = "both")
-T0 = Checkbutton(authFrame, text = "Unlock on Superuser Swipe", variable = unlocked, onvalue = 1, offvalue = 0, padx = 5, pady = 5)
-T0.pack(side = TOP, expand = 1, fill = "both")
+D0 = Checkbutton(authFrame, text = "Unlock on Superuser Swipe", variable = unlocked, onvalue = 1, offvalue = 0, padx = 5, pady = 5)
+D0.pack(side = TOP, expand = 1, fill = "both")
 
 #permissions Frame
 #Displays current UNI
@@ -108,7 +155,7 @@ E1.pack(side = LEFT, expand = 1, fill = "x")
 
 #Get and Set Buttons
 B1 = Button(permFrame1, text="Get", command = getData, padx = 5, pady = 5)
-B2 = Button(permFrame2, text="Set", command = setData, padx = 5, pady = 5)
+B2 = Button(permFrame2, text="Set", command = setData, padx = 5, pady = 5, state = DISABLED)
 B1.pack(side = RIGHT)
 B2.pack(side = RIGHT)
 
@@ -139,7 +186,7 @@ T9.grid(row = 4, column = 2, sticky = "W")
 T10.grid(row = 5, column = 2, sticky = "W")
 T11.grid(row = 6, column = 2, sticky = "W")
 
-nb.add(swiper, text="Swiper")
+nb.add(swiper, text="Add User")
 nb.add(superUserAuth, text="Superuser Authentication")
 nb.add(permissions, text="User Permissions")
 
@@ -147,7 +194,29 @@ nb.pack(expand=1, fill="both")
 
 while True:
 	window.update()
+	temp = IDObserver.cache[1]
+	if(uid.get() != temp):
+		uid.set(temp)
+		swipe = 1
+	#Pulling current swiped user data
+	if(swipe == 1):
+		uni.set(query_card(uid,'uni',userCnx))
+		user.set(query_card(uid,'user',userCnx))
+		printer.set(query_card(uid,'printer',userCnx))
+		laser.set(query_card(uid,'laser',userCnx))
+		mill.set(query_card(uid,'mill',userCnx))
+		vinyl.set(query_card(uid,'vinyl',userCnx))
+		solder.set(query_card(uid,'solder',userCnx))
+		drill.set(query_card(uid,'drill',userCnx))
+		sewing.set(query_card(uid,'sewing',userCnx))
+		osc.set(query_card(uid,'oscope',userCnx))
+		super.set(query_card(uid,'super',userCnx))
+		ban.set(query_card(uid,'banned',userCnx))
+		swipe = 0
+	
+	#Changing User Permissions
 	if(unlocked.get() == 1):
+		B2.config(state = NORMAL)
 		T0.config(state = NORMAL)
 		T1.config(state = NORMAL)
 		T2.config(state = NORMAL)
@@ -161,7 +230,10 @@ while True:
 		T10.config(state = NORMAL)
 		T11.config(state = NORMAL)
 		flag = 1
+	
+	#Relocking user permissions		
 	if(unlocked.get() == 0) and (flag == 1):
+		B2.config(state = DISABLED)
 		T0.config(state = DISABLED)
 		T1.config(state = DISABLED)
 		T2.config(state = DISABLED)
