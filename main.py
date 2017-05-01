@@ -215,7 +215,7 @@ while True:
 		swipe = 0
 	
 	#Changing User Permissions
-	if(unlocked.get() == 1):
+	if(unlocked.get() == 1) and (super.get() == 1):
 		B2.config(state = NORMAL)
 		T0.config(state = NORMAL)
 		T1.config(state = NORMAL)
