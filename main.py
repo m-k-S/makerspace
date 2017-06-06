@@ -84,7 +84,7 @@ window.title("Card Swipe System")
 
 #Variables for UI
 swipe = 0
-uid = StringVar()
+uidT = StringVar()
 uni = StringVar()
 firstname = StringVar()
 lastname = StringVar()
@@ -113,14 +113,14 @@ permissions = ttk.Frame(nb)
 addFrame = Frame(swiper)
 addFrame.pack(side = TOP, expand = 1, fill = "both")
 B1 = Label(addFrame, text = "UID")
-C1 = Entry(addFrame, textvariable = uid)
+C1 = Entry(addFrame, textvariable = uidT)
 B2 = Label(addFrame, text = "UNI")
 C2 = Entry(addFrame, textvariable = uni)
 B3 = Label(addFrame, text = "First Name")
 C3 = Entry(addFrame, textvariable = firstname)
 B4 = Label(addFrame, text = "Last Name")
 C4 = Entry(addFrame, textvariable = lastname)
-A0 = Button(addFrame, text = "Add User", command = add_user(uid.get(),uni.get(),lastname.get(),firstname.get(),userCnx), padx = 5, pady = 5)
+A0 = Button(addFrame, text = "Add User", command = add_user(uidT.get(),uni.get(),lastname.get(),firstname.get(),userCnx), padx = 5, pady = 5)
 B1.pack(side = TOP, expand = 1, fill = "both")
 C1.pack(side = TOP, expand = 1, fill = "both")
 B2.pack(side = TOP, expand = 1, fill = "both")
@@ -194,9 +194,11 @@ nb.pack(expand=1, fill="both")
 
 while True:
 	window.update()
-	temp = IDObserver.cache[1]
-	if(uid.get() != temp):
-		uid.set(temp)
+	uid = "1"
+	temp = uidT.get()
+	#= IDObserver.cache[-1]
+	if(uid != temp):
+		uidT.set(temp)
 		swipe = 1
 	#Pulling current swiped user data
 	if(swipe == 1):
