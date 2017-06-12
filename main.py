@@ -83,12 +83,13 @@ window = Tkinter.Tk()
 window.title("Card Swipe System")
 
 #Variables for UI
+temp = "1"
 swipe = 0
 uidT = StringVar()
 uni = StringVar()
 firstname = StringVar()
 lastname = StringVar()
-user = BooleanVar()
+user = StringVar()
 printer = BooleanVar()
 laser = BooleanVar()
 mill = BooleanVar()
@@ -102,6 +103,7 @@ super = BooleanVar()
 ban = BooleanVar()
 unlocked = BooleanVar()
 flag = 0
+uidT.set("1")
 
 #Modding main window to make it tabbable
 nb = ttk.Notebook(window)
@@ -194,7 +196,7 @@ nb.pack(expand=1, fill="both")
 
 while True:
 	window.update()
-	uid = "1"
+	uid = temp
 	temp = uidT.get()
 	#= IDObserver.cache[-1]
 	if(uid != temp):
@@ -204,16 +206,16 @@ while True:
 	if(swipe == 1):
 		uni.set(query_card(uid,'uni',userCnx))
 		user.set(query_card(uid,'user',userCnx))
-		printer.set(query_card(uid,'printer',userCnx))
-		laser.set(query_card(uid,'laser',userCnx))
-		mill.set(query_card(uid,'mill',userCnx))
-		vinyl.set(query_card(uid,'vinyl',userCnx))
-		solder.set(query_card(uid,'solder',userCnx))
-		drill.set(query_card(uid,'drill',userCnx))
-		sewing.set(query_card(uid,'sewing',userCnx))
-		osc.set(query_card(uid,'oscope',userCnx))
-		super.set(query_card(uid,'super',userCnx))
-		ban.set(query_card(uid,'banned',userCnx))
+		printer.set(str(query_card(uid,'printer',userCnx)))
+		laser.set(str(query_card(uid,'laser',userCnx)))
+		mill.set(str(query_card(uid,'mill',userCnx)))
+		vinyl.set(str(query_card(uid,'vinyl',userCnx)))
+		solder.set(str(query_card(uid,'solder',userCnx)))
+		drill.set(str(query_card(uid,'drill',userCnx)))
+		sewing.set(str(query_card(uid,'sewing',userCnx)))
+		osc.set(str(query_card(uid,'oscope',userCnx)))
+		super.set(str(query_card(uid,'super',userCnx)))
+		ban.set(str(query_card(uid,'banned',userCnx)))
 		swipe = 0
 	
 	#Changing User Permissions
