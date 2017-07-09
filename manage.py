@@ -12,6 +12,7 @@ import sys
 def add_user(uid, uni, lastname, firstname, dict):
 
     try:
+	#Order : [uni, lastname, firstname, user, drill, mill, sewing, printer, solder, oscope, vinyl, laser, super, banned]
 	default_list = [uni, lastname, firstname, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	if(uni == 'ye2184'):
         	default_list = [uni, lastname, firstname, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
@@ -24,27 +25,27 @@ def change_permissions(uid, field, perm, dict):
 
     try:
         current_list = dict[uid]
-	if (field == user):
+	if (field == 'user'):
 		current_list[3] = perm
-	elif (field == drill):
+	elif (field == 'drill'):
 		current_list[4] = perm
-	elif (field == mill):
+	elif (field == 'mill'):
 		current_list[5] = perm
-	elif (field == sewing):
+	elif (field == 'sewing'):
 		current_list[6] = perm
-	elif (field == printer):
+	elif (field == 'printer'):
 		current_list[7] = perm
-	elif (field == solder):
+	elif (field == 'solder'):
 		current_list[8] = perm
-	elif (field == oscope):
+	elif (field == 'oscope'):
 		current_list[9] = perm
-	elif (field == vinyl):
+	elif (field == 'vinyl'):
 		current_list[10] = perm
-	elif (field == laser):
+	elif (field == 'laser'):
 		current_list[11] = perm
-	elif (field == super):
+	elif (field == 'super'):
 		current_list[12] = perm
-	elif (field == banned):
+	elif (field == 'banned'):
 		current_list[13] = perm
 	dict[uid] = current_list
     except:
@@ -76,33 +77,86 @@ def log_entry(uid, uni, cnx):
 # a given swiped card
 # To call this function:
 #   Pass the UID of the card, the field to query, and the MySQL db connection
-def query_card(uni, field, dict):
+def query_card(uid, field, dict):
 
     try:
         current_list = dict[uid]
-	if (field == user):
+	if (field == 'user'):
 		return current_list[3]
-	elif (field == drill):
+	elif (field == 'drill'):
 		return current_list[4]
-	elif (field == mill):
+	elif (field == 'mill'):
 		return current_list[5]
-	elif (field == sewing):
+	elif (field == 'sewing'):
 		return current_list[6]
-	elif (field == printer):
+	elif (field == 'printer'):
 		return current_list[7]
-	elif (field == solder):
+	elif (field == 'solder'):
 		return current_list[8]
-	elif (field == oscope):
+	elif (field == 'oscope'):
 		return current_list[9]
-	elif (field == vinyl):
+	elif (field == 'vinyl'):
 		return current_list[10]
-	elif (field == laser):
+	elif (field == 'laser'):
 		return current_list[11]
-	elif (field == super):
+	elif (field == 'super'):
 		return current_list[12]
-	elif (field == banned):
+	elif (field == 'banned'):
 		return current_list[13]
-	dict[uid] = current_list
     except:
         e = sys.exc_info()[0]
         return e
+
+def query_card_uni(uni, field, dict):
+	for i in dict:
+		if(i[0] == uni):
+			if (field == 'user'):
+				return current_list[3]
+			elif (field == 'drill'):
+				return current_list[4]
+			elif (field == 'mill'):
+				return current_list[5]
+			elif (field == 'sewing'):
+				return current_list[6]
+			elif (field == 'printer'):
+				return current_list[7]
+			elif (field == 'solder'):
+				return current_list[8]
+			elif (field == 'oscope'):
+				return current_list[9]
+			elif (field == 'vinyl'):
+				return current_list[10]
+			elif (field == 'laser'):
+				return current_list[11]
+			elif (field == 'super'):
+				return current_list[12]
+			elif (field == 'banned'):
+				return current_list[13]
+
+def change_permissions(uni, field, perm, dict):
+	for i in dict:
+ 		if(i[0] == uni):
+			if (field == 'user'):
+				current_list[3] = perm
+			elif (field == 'drill'):
+				current_list[4] = perm
+			elif (field == 'mill'):
+				current_list[5] = perm
+			elif (field == 'sewing'):
+				current_list[6] = perm
+			elif (field == 'printer'):
+				current_list[7] = perm
+			elif (field == 'solder'):
+				current_list[8] = perm
+			elif (field == 'oscope'):
+				current_list[9] = perm
+			elif (field == 'vinyl'):
+				current_list[10] = perm
+			elif (field == 'laser'):
+				current_list[11] = perm
+			elif (field == 'super'):
+				current_list[12] = perm
+			elif (field == 'banned'):
+				current_list[13] = perm
+			dict[uid] = current_list
+		

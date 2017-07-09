@@ -15,7 +15,6 @@ from Tkinter import *
 import ttk
 from manage import *
 import time
-from pynput.keyboard import Key, Listener
 
 # Dependencies:
 #   * swig 3.0.12
@@ -23,19 +22,9 @@ from pynput.keyboard import Key, Listener
 
 #Establish dictionary of users
 dict = {}
-'''
-def on_press(key):
+
+def on_swipe(key):
     swipe = 1
-
-def on_release(key):
-     var = 1
-
-# Keyboard Listener
-with Listener(
-        on_press=on_press,
-        on_release=on_release) as listener:
-    listener.join()
-'''
 
 #Swipe Data Get
 def getData():
@@ -53,31 +42,30 @@ def getData():
      ban.set(query_card(uid.get(),'banned',dict))
 
 def getDataUNI():
-     uni.set(query_card(uni.get(),'uni',dict))
-     user.set(query_card(uni.get(),'user',dict))
-     printer.set(query_card(uni.get(),'printer',dict))
-     laser.set(query_card(uni.get(),'laser',dict))
-     mill.set(query_card(uni.get(),'mill',dict))
-     vinyl.set(query_card(uni.get(),'vinyl',dict))
-     solder.set(query_card(uni.get(),'solder',dict))
-     drill.set(query_card(uni.get(),'drill',dict))
-     sewing.set(query_card(uni.get(),'sewing',dict))
-     osc.set(query_card(uni.get(),'oscope',dict))
-     super.set(query_card(uni.get(),'super',dict))
-     ban.set(query_card(uni.get(),'banned',dict))
+     user.set(query_card_uni(uni.get(),'user',dict))
+     printer.set(query_card_uni(uni.get(),'printer',dict))
+     laser.set(query_card_uni(uni.get(),'laser',dict))
+     mill.set(query_card_uni(uni.get(),'mill',dict))
+     vinyl.set(query_card_uni(uni.get(),'vinyl',dict))
+     solder.set(query_card_uni(uni.get(),'solder',dict))
+     drill.set(query_card_uni(uni.get(),'drill',dict))
+     sewing.set(query_card_uni(uni.get(),'sewing',dict))
+     osc.set(query_card_uni(uni.get(),'oscope',dict))
+     super.set(query_card_uni(uni.get(),'super',dict))
+     ban.set(query_card_uni(uni.get(),'banned',dict))
 
 def setDataUNI():
-     change_permissions(uni.get(),'user',user.get(),dict)
-     change_permissions(uni.get(),'printer',printer.get(),dict)
-     change_permissions(uni.get(),'laser',laser.get(),dict)
-     change_permissions(uni.get(),'mill',mill.get(),dict)
-     change_permissions(uni.get(),'vinyl',vinyl.get(),dict)
-     change_permissions(uni.get(),'solder',solder.get(),dict)
-     change_permissions(uni.get(),'drill',drill.get(),dict)
-     change_permissions(uni.get(),'sewing',sewing.get(),dict)
-     change_permissions(uni.get(),'oscope',osc.get(),dict)
-     change_permissions(uni.get(),'super',super.get(),dict)
-     change_permissions(uni.get(),'banned',ban.get(),dict)
+     change_permissions_uni(uni.get(),'user',user.get(),dict)
+     change_permissions_uni(uni.get(),'printer',printer.get(),dict)
+     change_permissions_uni(uni.get(),'laser',laser.get(),dict)
+     change_permissions_uni(uni.get(),'mill',mill.get(),dict)
+     change_permissions_uni(uni.get(),'vinyl',vinyl.get(),dict)
+     change_permissions_uni(uni.get(),'solder',solder.get(),dict)
+     change_permissions_uni(uni.get(),'drill',drill.get(),dict)
+     change_permissions_uni(uni.get(),'sewing',sewing.get(),dict)
+     change_permissions_uni(uni.get(),'oscope',osc.get(),dict)
+     change_permissions_uni(uni.get(),'super',super.get(),dict)
+     change_permissions_uni(uni.get(),'banned',ban.get(),dict)
 		
 
 #Main Window
@@ -121,7 +109,9 @@ permissions.visible = False
 signFrame = Frame(signin)
 signFrame.pack(side = TOP, expand = 1, fill = "both")
 Z0 = Label(signFrame, text= "Tap to sign in")
+Z0.bind('<Key>', on_swipe)
 Z0.pack(side = TOP, expand = 1, fill = "both")
+
 
 
 #Adding Users
@@ -150,9 +140,10 @@ A0.pack(side = TOP, expand = 1, fill = "both")
 authFrame = Frame(superUserAuth)
 authFrame.pack(side = TOP, expand = 1, fill = "both")
 D0 = Checkbutton(authFrame, text = "Unlock on Superuser Swipe", variable = unlocked, onvalue = 1, offvalue = 0, padx = 5, pady = 5)
+D0.bind('<Key>', on_swipe)
 D0.pack(side = TOP, expand = 1, fill = "both")
 
-#permissions Frame
+#Permissions Frame
 #Displays current UNI
 permFrame1 = Frame(permissions)
 permFrame2 = Frame(permissions)
@@ -163,6 +154,7 @@ permFrame3.pack(side = RIGHT, expand = 1, fill = "both")
 
 #UNI Entry and Display
 L1 = Label(permFrame1, text = "UNI")
+L1.bind('<Key>', on_swipe)
 E1 = Entry(permFrame1, text = uni)
 
 L1.pack(side = LEFT, expand = 1, fill = "x")
@@ -212,7 +204,7 @@ while True:
 	window.update()
 
 	#Pulling current swiped user data
-	if(swipe == 1) and ((signin.visible == True) or (permissions.visible == True)):
+	if(swipe == 1):
 		permissions.visible = True
 		uni.set(query_card(uid.get(),'uni',dict))
 		user.set(query_card(uid.get(),'user',dict))
