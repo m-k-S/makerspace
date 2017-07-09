@@ -3,7 +3,7 @@
 # -----------------------------------------------------------
 # Functions for modifying data in SQL databases
 # Written for the 2017 Columbia Makerspace swipe system
-# - Max Aalto, Yonah Elorza 2017
+# - Yonah Elorza 2017, database collaboration by Max Aalto
 # -----------------------------------------------------------
 
 from datetime import datetime
@@ -108,7 +108,7 @@ def query_card(uid, field, dict):
         return e
 
 def query_card_uni(uni, field, dict):
-	for i in dict:
+	for h, i in dict.iteritems():
 		if(i[0] == uni):
 			if (field == 'user'):
 				return current_list[3]
@@ -134,7 +134,7 @@ def query_card_uni(uni, field, dict):
 				return current_list[13]
 
 def change_permissions(uni, field, perm, dict):
-	for i in dict:
+	for h, i in dict.iteritems():
  		if(i[0] == uni):
 			if (field == 'user'):
 				current_list[3] = perm

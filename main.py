@@ -20,13 +20,54 @@ import time
 #   * swig 3.0.12
 #       ** PCRE
 
+#Main Window
+window = Tkinter.Tk()
+window.title("Card Swipe System")
+
+#Variables for UI
+swipe = 0
+permSwipe = 0
+uid = StringVar()
+uni = StringVar()
+firstname = StringVar()
+lastname = StringVar()
+user = StringVar()
+printer = BooleanVar()
+laser = BooleanVar()
+mill = BooleanVar()
+vinyl = BooleanVar()
+solder = BooleanVar()
+drill = BooleanVar()
+sewing = BooleanVar()
+hand = BooleanVar()
+osc = BooleanVar()
+super = BooleanVar()
+ban = BooleanVar()
+unlocked = BooleanVar()
+flag = 0
+
 #Establish dictionary of users
 dict = {}
 
 def on_swipe(key):
+    uid.set(key)
     swipe = 1
 
+def on_swipe_perm(key):
+    uid.set(key)
+    permSwipe = 1
+
+def raise_frame(frame):
+    frame.tkraise()
+
 #Swipe Data Get
+def add():
+	uid.set(C1.get())
+	uni.set(C2.get())
+	lastname.set(C3.get())
+	firstname.set(C4.get())
+	add_user(uid.get(),uni.get(),lastname.get(),firstname.get(),dict)
+
 def getData():
      uni.set(query_card(uid.get(),'uni',dict))
      user.set(query_card(uid.get(),'user',dict))
@@ -68,39 +109,13 @@ def setDataUNI():
      change_permissions_uni(uni.get(),'banned',ban.get(),dict)
 		
 
-#Main Window
-window = Tkinter.Tk()
-window.title("Card Swipe System")
-
-#Variables for UI
-swipe = 0
-uidT = StringVar()
-uid = StringVar()
-uni = StringVar()
-firstname = StringVar()
-lastname = StringVar()
-user = StringVar()
-printer = BooleanVar()
-laser = BooleanVar()
-mill = BooleanVar()
-vinyl = BooleanVar()
-solder = BooleanVar()
-drill = BooleanVar()
-sewing = BooleanVar()
-hand = BooleanVar()
-osc = BooleanVar()
-super = BooleanVar()
-ban = BooleanVar()
-unlocked = BooleanVar()
-flag = 0
-
 #Modding main window to make it tabbable
 nb = ttk.Notebook(window)
 signin = ttk.Frame(nb)
 swiper = ttk.Frame(nb)
 superUserAuth = ttk.Frame(nb)
 permissions = ttk.Frame(nb)
-signin.visible = False
+signin.visible = True
 swiper.visible = False
 superUserAuth.visible = False
 permissions.visible = False
@@ -118,14 +133,14 @@ Z0.pack(side = TOP, expand = 1, fill = "both")
 addFrame = Frame(swiper)
 addFrame.pack(side = TOP, expand = 1, fill = "both")
 B1 = Label(addFrame, text = "UID")
-C1 = Entry(addFrame, textvariable = uidT)
+C1 = Entry(addFrame, textvariable = uid)
 B2 = Label(addFrame, text = "UNI")
 C2 = Entry(addFrame, textvariable = uni)
 B3 = Label(addFrame, text = "First Name")
 C3 = Entry(addFrame, textvariable = firstname)
 B4 = Label(addFrame, text = "Last Name")
 C4 = Entry(addFrame, textvariable = lastname)
-A0 = Button(addFrame, text = "Add User", command = add_user(uidT.get(),uni.get(),lastname.get(),firstname.get(),dict), padx = 5, pady = 5)
+A0 = Button(addFrame, text = "Add User", command = add(), padx = 5, pady = 5)
 B1.pack(side = TOP, expand = 1, fill = "both")
 C1.pack(side = TOP, expand = 1, fill = "both")
 B2.pack(side = TOP, expand = 1, fill = "both")
@@ -140,7 +155,7 @@ A0.pack(side = TOP, expand = 1, fill = "both")
 authFrame = Frame(superUserAuth)
 authFrame.pack(side = TOP, expand = 1, fill = "both")
 D0 = Checkbutton(authFrame, text = "Unlock on Superuser Swipe", variable = unlocked, onvalue = 1, offvalue = 0, padx = 5, pady = 5)
-D0.bind('<Key>', on_swipe)
+D0.bind('<Key>', on_swipe_perm)
 D0.pack(side = TOP, expand = 1, fill = "both")
 
 #Permissions Frame
@@ -205,7 +220,7 @@ while True:
 
 	#Pulling current swiped user data
 	if(swipe == 1):
-		permissions.visible = True
+		raise_frame(permissions)
 		uni.set(query_card(uid.get(),'uni',dict))
 		user.set(query_card(uid.get(),'user',dict))
 		printer.set(query_card(uid.get(),'printer',dict))
@@ -221,9 +236,10 @@ while True:
 		swipe = 0
 	
 	#Changing User Permissions
-	if(superUserAuth.visible == True) and (swipe == 1) and (unlocked.get() == 1):
+	if(permSwipe == 1) and (unlocked.get() == 1):
 		super.set(query_card(uid.get(),'super',dict))
 		if(super.get() == 1):
+			raise_frame(permissions)
 			permissions.visible = True
 			B2.config(state = NORMAL)
 			T0.config(state = NORMAL)
@@ -239,6 +255,7 @@ while True:
 			T10.config(state = NORMAL)
 			T11.config(state = NORMAL)
 			flag = 1
+			permSwipe = 0
 	
 	#Relocking user permissions		
 	if(unlocked.get() == 0) and (flag == 1):
