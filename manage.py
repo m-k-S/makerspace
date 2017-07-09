@@ -12,9 +12,9 @@ import sys
 def add_user(uid, uni, lastname, firstname, dict):
 
     try:
-	#Order : [uni, lastname, firstname, user, drill, mill, sewing, printer, solder, oscope, vinyl, laser, super, banned]
-	default_list = [uni, lastname, firstname, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-	if(uni == 'ye2184'):
+        #Order : [uni, lastname, firstname, user, drill, mill, sewing, printer, solder, oscope, vinyl, laser, super, banned]
+        default_list = [uni, lastname, firstname, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        if(uni == 'ye2184'):
         	default_list = [uni, lastname, firstname, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
 	dict[uid] = default_list
     except:
@@ -111,52 +111,52 @@ def query_card_uni(uni, field, dict):
 	for h, i in dict.iteritems():
 		if(i[0] == uni):
 			if (field == 'user'):
-				return current_list[3]
+				return i[3]
 			elif (field == 'drill'):
-				return current_list[4]
+				return i[4]
 			elif (field == 'mill'):
-				return current_list[5]
+				return i[5]
 			elif (field == 'sewing'):
-				return current_list[6]
+				return i[6]
 			elif (field == 'printer'):
-				return current_list[7]
+				return i[7]
 			elif (field == 'solder'):
-				return current_list[8]
+				return i[8]
 			elif (field == 'oscope'):
-				return current_list[9]
+				return i[9]
 			elif (field == 'vinyl'):
-				return current_list[10]
+				return i[10]
 			elif (field == 'laser'):
-				return current_list[11]
+				return i[11]
 			elif (field == 'super'):
-				return current_list[12]
+				return i[12]
 			elif (field == 'banned'):
-				return current_list[13]
+				return i[13]
 
 def change_permissions(uni, field, perm, dict):
 	for h, i in dict.iteritems():
  		if(i[0] == uni):
 			if (field == 'user'):
-				current_list[3] = perm
+				i[3] = perm
 			elif (field == 'drill'):
-				current_list[4] = perm
+				i[4] = perm
 			elif (field == 'mill'):
-				current_list[5] = perm
+				i[5] = perm
 			elif (field == 'sewing'):
-				current_list[6] = perm
+				i[6] = perm
 			elif (field == 'printer'):
-				current_list[7] = perm
+				i[7] = perm
 			elif (field == 'solder'):
-				current_list[8] = perm
+				i[8] = perm
 			elif (field == 'oscope'):
-				current_list[9] = perm
+				i[9] = perm
 			elif (field == 'vinyl'):
-				current_list[10] = perm
+				i[10] = perm
 			elif (field == 'laser'):
-				current_list[11] = perm
+				i[11] = perm
 			elif (field == 'super'):
-				current_list[12] = perm
+				i[12] = perm
 			elif (field == 'banned'):
-				current_list[13] = perm
-			dict[uid] = current_list
+				i[13] = perm
+			h = i
 		
