@@ -15,37 +15,11 @@ def add_user(uid, uni, lastname, firstname, dct):
     try:
         #Order : [uni, lastname, firstname, user, drill, mill, sewing, printer, solder, oscope, vinyl, laser, super, banned]
         default_list = [
-            uni,
-            lastname,
-            firstname,
-            1,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0]
+            uni, lastname, firstname, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         if(uni == 'ye2184'):
             default_list = [
-                uni,
-                lastname,
-                firstname,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                1,
-                0]
-            dct[uid] = default_list
+                uni, lastname, firstname, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
+        dct[uid] = default_list
     except:
         e = sys.exc_info()[0]
         return e

@@ -6,10 +6,12 @@
 # Written for the 2017 Columbia Makerspace swipe system
 # - Yonah Elorza 2017, with database assistance from Max Alto
 #
+#
+# Dependencies:
+#   * swig 3.0.12
+#       ** PCRE
 # -----------------------------------------------------------
 
-from datetime import datetime
-import sys
 try:
     import Tkinter
     from Tkinter import *
@@ -17,12 +19,9 @@ except:
     import tkinter as Tkinter
     from tkinter import *
 import ttk
-from manage import *
-import time
+import manage
 
-# Dependencies:
-#   * swig 3.0.12
-#       ** PCRE
+
 
 # Main Window
 window = Tkinter.Tk()
@@ -51,7 +50,10 @@ unlocked = BooleanVar()
 flag = 0
 
 # Establish dctionary of users
-dct = {}
+dct = {
+    '4808739405663507168\n2cef529fab': [
+        'ye2184', 'Elorza', 'Yonah', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
+}
 
 
 def on_swipe(key):
@@ -75,50 +77,50 @@ def add():
     uni.set(C2.get())
     lastname.set(C3.get())
     firstname.set(C4.get())
-    add_user(uid.get(), uni.get(), lastname.get(), firstname.get(), dct)
+    manage.add_user(uid.get(), uni.get(), lastname.get(), firstname.get(), dct)
 
 
 def getData():
-    uni.set(query_card(uid.get(), 'uni', dct))
-    user.set(query_card(uid.get(), 'user', dct))
-    printer.set(query_card(uid.get(), 'printer', dct))
-    laser.set(query_card(uid.get(), 'laser', dct))
-    mill.set(query_card(uid.get(), 'mill', dct))
-    vinyl.set(query_card(uid.get(), 'vinyl', dct))
-    solder.set(query_card(uid.get(), 'solder', dct))
-    drill.set(query_card(uid.get(), 'drill', dct))
-    sewing.set(query_card(uid.get(), 'sewing', dct))
-    osc.set(query_card(uid.get(), 'oscope', dct))
-    super.set(query_card(uid.get(), 'super', dct))
-    ban.set(query_card(uid.get(), 'banned', dct))
+    uni.set(manage.query_card(uid.get(), 'uni', dct))
+    user.set(manage.query_card(uid.get(), 'user', dct))
+    printer.set(manage.query_card(uid.get(), 'printer', dct))
+    laser.set(manage.query_card(uid.get(), 'laser', dct))
+    mill.set(manage.query_card(uid.get(), 'mill', dct))
+    vinyl.set(manage.query_card(uid.get(), 'vinyl', dct))
+    solder.set(manage.query_card(uid.get(), 'solder', dct))
+    drill.set(manage.query_card(uid.get(), 'drill', dct))
+    sewing.set(manage.query_card(uid.get(), 'sewing', dct))
+    osc.set(manage.query_card(uid.get(), 'oscope', dct))
+    super.set(manage.query_card(uid.get(), 'super', dct))
+    ban.set(manage.query_card(uid.get(), 'banned', dct))
 
 
 def getDataUNI():
-    user.set(query_card_uni(uni.get(), 'user', dct))
-    printer.set(query_card_uni(uni.get(), 'printer', dct))
-    laser.set(query_card_uni(uni.get(), 'laser', dct))
-    mill.set(query_card_uni(uni.get(), 'mill', dct))
-    vinyl.set(query_card_uni(uni.get(), 'vinyl', dct))
-    solder.set(query_card_uni(uni.get(), 'solder', dct))
-    drill.set(query_card_uni(uni.get(), 'drill', dct))
-    sewing.set(query_card_uni(uni.get(), 'sewing', dct))
-    osc.set(query_card_uni(uni.get(), 'oscope', dct))
-    super.set(query_card_uni(uni.get(), 'super', dct))
-    ban.set(query_card_uni(uni.get(), 'banned', dct))
+    user.set(manage.query_card_uni(uni.get(), 'user', dct))
+    printer.set(manage.query_card_uni(uni.get(), 'printer', dct))
+    laser.set(manage.query_card_uni(uni.get(), 'laser', dct))
+    mill.set(manage.query_card_uni(uni.get(), 'mill', dct))
+    vinyl.set(manage.query_card_uni(uni.get(), 'vinyl', dct))
+    solder.set(manage.query_card_uni(uni.get(), 'solder', dct))
+    drill.set(manage.query_card_uni(uni.get(), 'drill', dct))
+    sewing.set(manage.query_card_uni(uni.get(), 'sewing', dct))
+    osc.set(manage.query_card_uni(uni.get(), 'oscope', dct))
+    super.set(manage.query_card_uni(uni.get(), 'super', dct))
+    ban.set(manage.query_card_uni(uni.get(), 'banned', dct))
 
 
 def setDataUNI():
-    change_permissions_uni(uni.get(), 'user', user.get(), dct)
-    change_permissions_uni(uni.get(), 'printer', printer.get(), dct)
-    change_permissions_uni(uni.get(), 'laser', laser.get(), dct)
-    change_permissions_uni(uni.get(), 'mill', mill.get(), dct)
-    change_permissions_uni(uni.get(), 'vinyl', vinyl.get(), dct)
-    change_permissions_uni(uni.get(), 'solder', solder.get(), dct)
-    change_permissions_uni(uni.get(), 'drill', drill.get(), dct)
-    change_permissions_uni(uni.get(), 'sewing', sewing.get(), dct)
-    change_permissions_uni(uni.get(), 'oscope', osc.get(), dct)
-    change_permissions_uni(uni.get(), 'super', super.get(), dct)
-    change_permissions_uni(uni.get(), 'banned', ban.get(), dct)
+    manage.change_permissions_uni(uni.get(), 'user', user.get(), dmanage.ct)
+    manage.change_permissions_uni(uni.get(), 'printer', printer.get(), dmanage.ct)
+    manage.change_permissions_uni(uni.get(), 'laser', laser.get(), dmanage.ct)
+    manage.change_permissions_uni(uni.get(), 'mill', mill.get(), dmanage.ct)
+    manage.change_permissions_uni(uni.get(), 'vinyl', vinyl.get(), dmanage.ct)
+    manage.change_permissions_uni(uni.get(), 'solder', solder.get(), dmanage.ct)
+    manage.change_permissions_uni(uni.get(), 'drill', drill.get(), dmanage.ct)
+    manage.change_permissions_uni(uni.get(), 'sewing', sewing.get(), dmanage.ct)
+    manage.change_permissions_uni(uni.get(), 'osmanage.cope', osmanage.c.get(), dmanage.ct)
+    manage.change_permissions_uni(uni.get(), 'super', super.get(), dmanage.ct)
+    manage.change_permissions_uni(uni.get(), 'banned', ban.get(), dmanage.ct)
 
 
 # Modding main window to make it tabbable
@@ -151,7 +153,7 @@ B3 = Label(addFrame, text="First Name")
 C3 = Entry(addFrame, textvariable=firstname)
 B4 = Label(addFrame, text="Last Name")
 C4 = Entry(addFrame, textvariable=lastname)
-A0 = Button(addFrame, text="Add User", command=add(), padx=5, pady=5)
+A0 = Button(addFrame, text="Add User", command=add, padx=5, pady=5)
 B1.pack(side=TOP, expand=1, fill="both")
 C1.pack(side=TOP, expand=1, fill="both")
 B2.pack(side=TOP, expand=1, fill="both")
@@ -341,23 +343,25 @@ while True:
     # Pulling current swiped user data
     if(swipe == 1):
         raise_frame(permissions)
-        uni.set(query_card(uid.get(), 'uni', dct))
-        user.set(query_card(uid.get(), 'user', dct))
-        printer.set(query_card(uid.get(), 'printer', dct))
-        laser.set(query_card(uid.get(), 'laser', dct))
-        mill.set(query_card(uid.get(), 'mill', dct))
-        vinyl.set(query_card(uid.get(), 'vinyl', dct))
-        solder.set(query_card(uid.get(), 'solder', dct))
-        drill.set(query_card(uid.get(), 'drill', dct))
-        sewing.set(query_card(uid.get(), 'sewing', dct))
-        osc.set(query_card(uid.get(), 'oscope', dct))
-        super.set(query_card(uid.get(), 'super', dct))
-        ban.set(query_card(uid.get(), 'banned', dct))
+        uni.set(manage.query_card(uid.get(), 'uni', dct))
+        user.set(manage.query_card(uid.get(), 'user', dct))
+        printer.set(manage.query_card(uid.get(), 'printer', dct))
+        laser.set(manage.query_card(uid.get(), 'laser', dct))
+        mill.set(manage.query_card(uid.get(), 'mill', dct))
+        vinyl.set(manage.query_card(uid.get(), 'vinyl', dct))
+        solder.set(manage.query_card(uid.get(), 'solder', dct))
+        drill.set(manage.query_card(uid.get(), 'drill', dct))
+        sewing.set(manage.query_card(uid.get(), 'sewing', dct))
+        osc.set(manage.query_card(uid.get(), 'oscope', dct))
+        super.set(manage.query_card(uid.get(), 'super', dct))
+        ban.set(manage.query_card(uid.get(), 'banned', dct))
         swipe = 0
 
     # Changing User Permissions
+    print("hello")
     if(permSwipe == 1) and (unlocked.get() == 1):
-        super.set(query_card(uid.get(), 'super', dct))
+        print("world")
+        super.set(manage.query_card(uid.get(), 'super', dct))
         if(super.get() == 1):
             raise_frame(permissions)
             permissions.visible = True
