@@ -46,8 +46,8 @@ ban = BooleanVar()
 unlocked = BooleanVar()
 flag = 0
 
-#Establish dictionary of users
-dict = {}
+#Establish dctionary of users
+dct = {}
 
 def on_swipe(key):
     uid.set(key)
@@ -62,52 +62,52 @@ def raise_frame(frame):
 
 #Swipe Data Get
 def add():
-	uid.set(C1.get())
-	uni.set(C2.get())
-	lastname.set(C3.get())
-	firstname.set(C4.get())
-	add_user(uid.get(),uni.get(),lastname.get(),firstname.get(),dict)
+    uid.set(C1.get())
+        uni.set(C2.get())
+    lastname.set(C3.get())
+    firstname.set(C4.get())
+    add_user(uid.get(),uni.get(),lastname.get(),firstname.get(),dct)
 
 def getData():
-     uni.set(query_card(uid.get(),'uni',dict))
-     user.set(query_card(uid.get(),'user',dict))
-     printer.set(query_card(uid.get(),'printer',dict))
-     laser.set(query_card(uid.get(),'laser',dict))
-     mill.set(query_card(uid.get(),'mill',dict))
-     vinyl.set(query_card(uid.get(),'vinyl',dict))
-     solder.set(query_card(uid.get(),'solder',dict))
-     drill.set(query_card(uid.get(),'drill',dict))
-     sewing.set(query_card(uid.get(),'sewing',dict))
-     osc.set(query_card(uid.get(),'oscope',dict))
-     super.set(query_card(uid.get(),'super',dict))
-     ban.set(query_card(uid.get(),'banned',dict))
+     uni.set(query_card(uid.get(),'uni',dct))
+     user.set(query_card(uid.get(),'user',dct))
+     printer.set(query_card(uid.get(),'printer',dct))
+     laser.set(query_card(uid.get(),'laser',dct))
+     mill.set(query_card(uid.get(),'mill',dct))
+     vinyl.set(query_card(uid.get(),'vinyl',dct))
+     solder.set(query_card(uid.get(),'solder',dct))
+     drill.set(query_card(uid.get(),'drill',dct))
+     sewing.set(query_card(uid.get(),'sewing',dct))
+     osc.set(query_card(uid.get(),'oscope',dct))
+     super.set(query_card(uid.get(),'super',dct))
+     ban.set(query_card(uid.get(),'banned',dct))
 
 def getDataUNI():
-     user.set(query_card_uni(uni.get(),'user',dict))
-     printer.set(query_card_uni(uni.get(),'printer',dict))
-     laser.set(query_card_uni(uni.get(),'laser',dict))
-     mill.set(query_card_uni(uni.get(),'mill',dict))
-     vinyl.set(query_card_uni(uni.get(),'vinyl',dict))
-     solder.set(query_card_uni(uni.get(),'solder',dict))
-     drill.set(query_card_uni(uni.get(),'drill',dict))
-     sewing.set(query_card_uni(uni.get(),'sewing',dict))
-     osc.set(query_card_uni(uni.get(),'oscope',dict))
-     super.set(query_card_uni(uni.get(),'super',dict))
-     ban.set(query_card_uni(uni.get(),'banned',dict))
+     user.set(query_card_uni(uni.get(),'user',dct))
+     printer.set(query_card_uni(uni.get(),'printer',dct))
+     laser.set(query_card_uni(uni.get(),'laser',dct))
+     mill.set(query_card_uni(uni.get(),'mill',dct))
+     vinyl.set(query_card_uni(uni.get(),'vinyl',dct))
+     solder.set(query_card_uni(uni.get(),'solder',dct))
+     drill.set(query_card_uni(uni.get(),'drill',dct))
+     sewing.set(query_card_uni(uni.get(),'sewing',dct))
+     osc.set(query_card_uni(uni.get(),'oscope',dct))
+     super.set(query_card_uni(uni.get(),'super',dct))
+     ban.set(query_card_uni(uni.get(),'banned',dct))
 
 def setDataUNI():
-     change_permissions_uni(uni.get(),'user',user.get(),dict)
-     change_permissions_uni(uni.get(),'printer',printer.get(),dict)
-     change_permissions_uni(uni.get(),'laser',laser.get(),dict)
-     change_permissions_uni(uni.get(),'mill',mill.get(),dict)
-     change_permissions_uni(uni.get(),'vinyl',vinyl.get(),dict)
-     change_permissions_uni(uni.get(),'solder',solder.get(),dict)
-     change_permissions_uni(uni.get(),'drill',drill.get(),dict)
-     change_permissions_uni(uni.get(),'sewing',sewing.get(),dict)
-     change_permissions_uni(uni.get(),'oscope',osc.get(),dict)
-     change_permissions_uni(uni.get(),'super',super.get(),dict)
-     change_permissions_uni(uni.get(),'banned',ban.get(),dict)
-		
+     change_permissions_uni(uni.get(),'user',user.get(),dct)
+     change_permissions_uni(uni.get(),'printer',printer.get(),dct)
+     change_permissions_uni(uni.get(),'laser',laser.get(),dct)
+     change_permissions_uni(uni.get(),'mill',mill.get(),dct)
+     change_permissions_uni(uni.get(),'vinyl',vinyl.get(),dct)
+     change_permissions_uni(uni.get(),'solder',solder.get(),dct)
+     change_permissions_uni(uni.get(),'drill',drill.get(),dct)
+     change_permissions_uni(uni.get(),'sewing',sewing.get(),dct)
+     change_permissions_uni(uni.get(),'oscope',osc.get(),dct)
+     change_permissions_uni(uni.get(),'super',super.get(),dct)
+     change_permissions_uni(uni.get(),'banned',ban.get(),dct)
+        
 
 #Modding main window to make it tabbable
 nb = ttk.Notebook(window)
@@ -216,62 +216,62 @@ nb.add(permissions, text="User Permissions")
 nb.pack(expand=1, fill="both")
 
 while True:
-	window.update()
+    window.update()
 
-	#Pulling current swiped user data
-	if(swipe == 1):
-		raise_frame(permissions)
-		uni.set(query_card(uid.get(),'uni',dict))
-		user.set(query_card(uid.get(),'user',dict))
-		printer.set(query_card(uid.get(),'printer',dict))
-		laser.set(query_card(uid.get(),'laser',dict))
-		mill.set(query_card(uid.get(),'mill',dict))
-		vinyl.set(query_card(uid.get(),'vinyl',dict))
-		solder.set(query_card(uid.get(),'solder',dict))
-		drill.set(query_card(uid.get(),'drill',dict))
-		sewing.set(query_card(uid.get(),'sewing',dict))
-		osc.set(query_card(uid.get(),'oscope',dict))
-		super.set(query_card(uid.get(),'super',dict))
-		ban.set(query_card(uid.get(),'banned',dict))
-		swipe = 0
-	
-	#Changing User Permissions
-	if(permSwipe == 1) and (unlocked.get() == 1):
-		super.set(query_card(uid.get(),'super',dict))
-		if(super.get() == 1):
-			raise_frame(permissions)
-			permissions.visible = True
-			B2.config(state = NORMAL)
-			T0.config(state = NORMAL)
-			T1.config(state = NORMAL)
-			T2.config(state = NORMAL)
-			T3.config(state = NORMAL)
-			T4.config(state = NORMAL)
-			T5.config(state = NORMAL)
-			T6.config(state = NORMAL)
-			T7.config(state = NORMAL)
-			T8.config(state = NORMAL)
-			T9.config(state = NORMAL)
-			T10.config(state = NORMAL)
-			T11.config(state = NORMAL)
-			flag = 1
-			permSwipe = 0
-	
-	#Relocking user permissions		
-	if(unlocked.get() == 0) and (flag == 1):
-		B2.config(state = DISABLED)
-		T0.config(state = DISABLED)
-		T1.config(state = DISABLED)
-		T2.config(state = DISABLED)
-		T3.config(state = DISABLED)
-		T4.config(state = DISABLED)
-		T5.config(state = DISABLED)
-		T6.config(state = DISABLED)
-		T7.config(state = DISABLED)
-		T8.config(state = DISABLED)
-		T9.config(state = DISABLED)
-		T10.config(state = DISABLED)
-		T11.config(state = DISABLED)
-		flag = 0
+    #Pulling current swiped user data
+    if(swipe == 1):
+        raise_frame(permissions)
+        uni.set(query_card(uid.get(),'uni',dct))
+        user.set(query_card(uid.get(),'user',dct))
+        printer.set(query_card(uid.get(),'printer',dct))
+        laser.set(query_card(uid.get(),'laser',dct))
+        mill.set(query_card(uid.get(),'mill',dct))
+        vinyl.set(query_card(uid.get(),'vinyl',dct))
+        solder.set(query_card(uid.get(),'solder',dct))
+        drill.set(query_card(uid.get(),'drill',dct))
+        sewing.set(query_card(uid.get(),'sewing',dct))
+        osc.set(query_card(uid.get(),'oscope',dct))
+        super.set(query_card(uid.get(),'super',dct))
+        ban.set(query_card(uid.get(),'banned',dct))
+        swipe = 0
+    
+    #Changing User Permissions
+    if(permSwipe == 1) and (unlocked.get() == 1):
+        super.set(query_card(uid.get(),'super',dct))
+        if(super.get() == 1):
+            raise_frame(permissions)
+            permissions.visible = True
+            B2.config(state = NORMAL)
+            T0.config(state = NORMAL)
+            T1.config(state = NORMAL)
+            T2.config(state = NORMAL)
+            T3.config(state = NORMAL)
+            T4.config(state = NORMAL)
+            T5.config(state = NORMAL)
+            T6.config(state = NORMAL)
+            T7.config(state = NORMAL)
+            T8.config(state = NORMAL)
+            T9.config(state = NORMAL)
+            T10.config(state = NORMAL)
+            T11.config(state = NORMAL)
+            flag = 1
+            permSwipe = 0
+    
+    #Relocking user permissions        
+    if(unlocked.get() == 0) and (flag == 1):
+        B2.config(state = DISABLED)
+        T0.config(state = DISABLED)
+        T1.config(state = DISABLED)
+        T2.config(state = DISABLED)
+        T3.config(state = DISABLED)
+        T4.config(state = DISABLED)
+        T5.config(state = DISABLED)
+        T6.config(state = DISABLED)
+        T7.config(state = DISABLED)
+        T8.config(state = DISABLED)
+        T9.config(state = DISABLED)
+        T10.config(state = DISABLED)
+        T11.config(state = DISABLED)
+        flag = 0
 
 
