@@ -4,10 +4,8 @@
 # GUI tool for keeping track of users & the tools they are
 # trained on in Columbia's student run Makerspace
 # Written for the 2017 Columbia Makerspace swipe system
-# - Max Aalto, Yonah Elorza 2017
-#
-# DISCLAIMER: We are fully aware this is vulnerable to SQL injection --
-# PLEASE do not open a web interface for SQL queries for any reason
+# - Yonah Elorza 2017, with database assistance from Max Alto
+# 
 # -----------------------------------------------------------
 
 from datetime import datetime
@@ -18,6 +16,7 @@ import ttk
 from cards import *
 from manage import *
 import time
+from pynput.keyboard import Key, Listener
 
 # Dependencies:
 # - mysql 2.2 (mySQL Python connector)
@@ -31,51 +30,62 @@ from cachetools import LRUCache
 from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.util import toHexString
 
-# Establish connection to Makerspace MySQL database;
-# This database should have the name 'makerspace',
-# a table named 'users', and a table named 'logs'
-userCnx = mysql.connector.connect(user='userlogin', password='6wQ89Sm3CNYt4vX9',
-                              host='make.seas.columbia.edu',
-                              database='users')
+#Establish dictionary of users
+dict = {}
 
-#logsCnx = mysql.connector.connect(user='userlogin', password='6wQ89Sm3CNYt4vX9',
-#                           host='make.seas.columbia.edu',
-#                           database='logs')
+def on_press(key):
+    swipe = 1
 
-# Initialize ID monitor -- IDObserver is an instance of
-# IDReader, defined in cards.py, which has a callable
-# cache dictionary (IDReader.cache), the latest entry of
-# which will be the last card read by the HID reader
-IDMonitor = CardMonitor()
-IDObserver = IDReader()
-IDMonitor.addObserver(IDObserver)
+def on_release(key):
+     var = 1
 
+# Keyboard Listener
+with Listener(
+        on_press=on_press,
+        on_release=on_release) as listener:
+    listener.join()
+
+#Swipe Data Get
 def getData():
-     uni.set(query_card(uid,'uni',userCnx))
-     user.set(query_card(uid,'user',userCnx))
-     printer.set(query_card(uid,'printer',userCnx))
-     laser.set(query_card(uid,'laser',userCnx))
-     mill.set(query_card(uid,'mill',userCnx))
-     vinyl.set(query_card(uid,'vinyl',userCnx))
-     solder.set(query_card(uid,'solder',userCnx))
-     drill.set(query_card(uid,'drill',userCnx))
-     sewing.set(query_card(uid,'sewing',userCnx))
-     osc.set(query_card(uid,'oscope',userCnx))
-     super.set(query_card(uid,'super',userCnx))
-     ban.set(query_card(uid,'banned',userCnx))
+     uni.set(query_card(uid.get(),'uni',dict))
+     user.set(query_card(uid.get(),'user',dict))
+     printer.set(query_card(uid.get(),'printer',dict))
+     laser.set(query_card(uid.get(),'laser',dict))
+     mill.set(query_card(uid.get(),'mill',dict))
+     vinyl.set(query_card(uid.get(),'vinyl',dict))
+     solder.set(query_card(uid.get(),'solder',dict))
+     drill.set(query_card(uid.get(),'drill',dict))
+     sewing.set(query_card(uid.get(),'sewing',dict))
+     osc.set(query_card(uid.get(),'oscope',dict))
+     super.set(query_card(uid.get(),'super',dict))
+     ban.set(query_card(uid.get(),'banned',dict))
 
-def setData():
-     change_permissions(uid,'user',user.get(),userCnx)
-     change_permissions(uid,'printer',printer.get(),userCnx)
-     change_permissions(uid,'laser',laser.get(),userCnx)
-     change_permissions(uid,'mill',mill.get(),userCnx)
-     change_permissions(uid,'vinyl',vinyl.get(),userCnx)
-     change_permissions(uid,'solder',solder.get(),userCnx)
-     change_permissions(uid,'drill',drill.get(),userCnx)
-     change_permissions(uid,'sewing',sewing.get(),userCnx)
-     change_permissions(uid,'oscope',osc.get(),userCnx)
-     change_permissions(uid,'super',super.get(),userCnx)
-     change_permissions(uid,'banned',ban.get(),userCnx)
+def getDataUNI():
+     uni.set(query_card(uid.get(),'uni',dict))
+     user.set(query_card(uid.get(),'user',dict))
+     printer.set(query_card(uid.get(),'printer',dict))
+     laser.set(query_card(uid.get(),'laser',dict))
+     mill.set(query_card(uid.get(),'mill',dict))
+     vinyl.set(query_card(uid.get(),'vinyl',dict))
+     solder.set(query_card(uid.get(),'solder',dict))
+     drill.set(query_card(uid.get(),'drill',dict))
+     sewing.set(query_card(uid.get(),'sewing',dict))
+     osc.set(query_card(uid.get(),'oscope',dict))
+     super.set(query_card(uid.get(),'super',dict))
+     ban.set(query_card(uid.get(),'banned',dict))
+
+def setDataUNI():
+     change_permissions(uni.get(),'user',user.get(),dict)
+     change_permissions(uni.get(),'printer',printer.get(),dict)
+     change_permissions(uni.get(),'laser',laser.get(),dict)
+     change_permissions(uni.get(),'mill',mill.get(),dict)
+     change_permissions(uni.get(),'vinyl',vinyl.get(),dict)
+     change_permissions(uni.get(),'solder',solder.get(),dict)
+     change_permissions(uni.get(),'drill',drill.get(),dict)
+     change_permissions(uni.get(),'sewing',sewing.get(),dict)
+     change_permissions(uni.get(),'oscope',osc.get(),dict)
+     change_permissions(uni.get(),'super',super.get(),dict)
+     change_permissions(uni.get(),'banned',ban.get(),dict)
 		
 
 #Main Window
@@ -83,9 +93,9 @@ window = Tkinter.Tk()
 window.title("Card Swipe System")
 
 #Variables for UI
-temp = "1"
 swipe = 0
 uidT = StringVar()
+uid = StringVar()
 uni = StringVar()
 firstname = StringVar()
 lastname = StringVar()
@@ -103,13 +113,20 @@ super = BooleanVar()
 ban = BooleanVar()
 unlocked = BooleanVar()
 flag = 0
-uidT.set("1")
 
 #Modding main window to make it tabbable
 nb = ttk.Notebook(window)
+signin = ttk.Frame(nb)
 swiper = ttk.Frame(nb)
 superUserAuth = ttk.Frame(nb)
 permissions = ttk.Frame(nb)
+
+#Sign-in frame
+signFrame = Frame(signin)
+signFrame.pack(side = TOP, expand = 1, fill = "both")
+Z0 = Label(signFrame, text= "Tap to sign in")
+Z0.pack(side = TOP, expand = 1, fill = "both")
+
 
 #Adding Users
 addFrame = Frame(swiper)
@@ -156,8 +173,8 @@ L1.pack(side = LEFT, expand = 1, fill = "x")
 E1.pack(side = LEFT, expand = 1, fill = "x")
 
 #Get and Set Buttons
-B1 = Button(permFrame1, text="Get", command = getData, padx = 5, pady = 5)
-B2 = Button(permFrame2, text="Set", command = setData, padx = 5, pady = 5, state = DISABLED)
+B1 = Button(permFrame1, text="Get", command = getDataUNI, padx = 5, pady = 5)
+B2 = Button(permFrame2, text="Set", command = setDataUNI, padx = 5, pady = 5, state = DISABLED)
 B1.pack(side = RIGHT)
 B2.pack(side = RIGHT)
 
@@ -188,6 +205,7 @@ T9.grid(row = 4, column = 2, sticky = "W")
 T10.grid(row = 5, column = 2, sticky = "W")
 T11.grid(row = 6, column = 2, sticky = "W")
 
+nb.add(signin, text="Sign-In")
 nb.add(swiper, text="Add User")
 nb.add(superUserAuth, text="Superuser Authentication")
 nb.add(permissions, text="User Permissions")
@@ -196,44 +214,43 @@ nb.pack(expand=1, fill="both")
 
 while True:
 	window.update()
-	uid = temp
-	temp = uidT.get()
-	#= IDObserver.cache[-1]
-	if(uid != temp):
-		uidT.set(temp)
-		swipe = 1
+
 	#Pulling current swiped user data
-	if(swipe == 1):
-		uni.set(query_card(uid,'uni',userCnx))
-		user.set(query_card(uid,'user',userCnx))
-		printer.set(str(query_card(uid,'printer',userCnx)))
-		laser.set(str(query_card(uid,'laser',userCnx)))
-		mill.set(str(query_card(uid,'mill',userCnx)))
-		vinyl.set(str(query_card(uid,'vinyl',userCnx)))
-		solder.set(str(query_card(uid,'solder',userCnx)))
-		drill.set(str(query_card(uid,'drill',userCnx)))
-		sewing.set(str(query_card(uid,'sewing',userCnx)))
-		osc.set(str(query_card(uid,'oscope',userCnx)))
-		super.set(str(query_card(uid,'super',userCnx)))
-		ban.set(str(query_card(uid,'banned',userCnx)))
+	if(swipe == 1) and ((signin.visible == True) or (permissions.visible == True)):
+		permissions.visible = True
+		uni.set(query_card(uid.get(),'uni',dict))
+		user.set(query_card(uid.get(),'user',dict))
+		printer.set(query_card(uid.get(),'printer',dict))
+		laser.set(query_card(uid.get(),'laser',dict))
+		mill.set(query_card(uid.get(),'mill',dict))
+		vinyl.set(query_card(uid.get(),'vinyl',dict))
+		solder.set(query_card(uid.get(),'solder',dict))
+		drill.set(query_card(uid.get(),'drill',dict))
+		sewing.set(query_card(uid.get(),'sewing',dict))
+		osc.set(query_card(uid.get(),'oscope',dict))
+		super.set(query_card(uid.get(),'super',dict))
+		ban.set(query_card(uid.get(),'banned',dict))
 		swipe = 0
 	
 	#Changing User Permissions
-	if(unlocked.get() == 1) and (super.get() == 1):
-		B2.config(state = NORMAL)
-		T0.config(state = NORMAL)
-		T1.config(state = NORMAL)
-		T2.config(state = NORMAL)
-		T3.config(state = NORMAL)
-		T4.config(state = NORMAL)
-		T5.config(state = NORMAL)
-		T6.config(state = NORMAL)
-		T7.config(state = NORMAL)
-		T8.config(state = NORMAL)
-		T9.config(state = NORMAL)
-		T10.config(state = NORMAL)
-		T11.config(state = NORMAL)
-		flag = 1
+	if(superUserAuth.visible == True) and (swipe == 1) and (unlocked.get() == 1):
+		super.set(query_card(uid.get(),'super',dict))
+		if(super.get() == 1):
+			permissions.visible = True
+			B2.config(state = NORMAL)
+			T0.config(state = NORMAL)
+			T1.config(state = NORMAL)
+			T2.config(state = NORMAL)
+			T3.config(state = NORMAL)
+			T4.config(state = NORMAL)
+			T5.config(state = NORMAL)
+			T6.config(state = NORMAL)
+			T7.config(state = NORMAL)
+			T8.config(state = NORMAL)
+			T9.config(state = NORMAL)
+			T10.config(state = NORMAL)
+			T11.config(state = NORMAL)
+			flag = 1
 	
 	#Relocking user permissions		
 	if(unlocked.get() == 0) and (flag == 1):
@@ -252,4 +269,4 @@ while True:
 		T11.config(state = DISABLED)
 		flag = 0
 
-# On: SIGINT - cnx.close()
+
