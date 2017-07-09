@@ -13,26 +13,17 @@ import sys
 import Tkinter
 from Tkinter import *
 import ttk
-from cards import *
 from manage import *
 import time
 from pynput.keyboard import Key, Listener
 
 # Dependencies:
-# - mysql 2.2 (mySQL Python connector)
-# - pyscard 1.9.5 (Smartcard Reader)
 #   * swig 3.0.12
 #       ** PCRE
-# - cachetools 2.0.0 (for memory caching)
-
-import mysql.connector
-from cachetools import LRUCache
-from smartcard.CardMonitoring import CardMonitor, CardObserver
-from smartcard.util import toHexString
 
 #Establish dictionary of users
 dict = {}
-
+'''
 def on_press(key):
     swipe = 1
 
@@ -44,6 +35,7 @@ with Listener(
         on_press=on_press,
         on_release=on_release) as listener:
     listener.join()
+'''
 
 #Swipe Data Get
 def getData():
@@ -61,18 +53,18 @@ def getData():
      ban.set(query_card(uid.get(),'banned',dict))
 
 def getDataUNI():
-     uni.set(query_card(uid.get(),'uni',dict))
-     user.set(query_card(uid.get(),'user',dict))
-     printer.set(query_card(uid.get(),'printer',dict))
-     laser.set(query_card(uid.get(),'laser',dict))
-     mill.set(query_card(uid.get(),'mill',dict))
-     vinyl.set(query_card(uid.get(),'vinyl',dict))
-     solder.set(query_card(uid.get(),'solder',dict))
-     drill.set(query_card(uid.get(),'drill',dict))
-     sewing.set(query_card(uid.get(),'sewing',dict))
-     osc.set(query_card(uid.get(),'oscope',dict))
-     super.set(query_card(uid.get(),'super',dict))
-     ban.set(query_card(uid.get(),'banned',dict))
+     uni.set(query_card(uni.get(),'uni',dict))
+     user.set(query_card(uni.get(),'user',dict))
+     printer.set(query_card(uni.get(),'printer',dict))
+     laser.set(query_card(uni.get(),'laser',dict))
+     mill.set(query_card(uni.get(),'mill',dict))
+     vinyl.set(query_card(uni.get(),'vinyl',dict))
+     solder.set(query_card(uni.get(),'solder',dict))
+     drill.set(query_card(uni.get(),'drill',dict))
+     sewing.set(query_card(uni.get(),'sewing',dict))
+     osc.set(query_card(uni.get(),'oscope',dict))
+     super.set(query_card(uni.get(),'super',dict))
+     ban.set(query_card(uni.get(),'banned',dict))
 
 def setDataUNI():
      change_permissions(uni.get(),'user',user.get(),dict)
@@ -120,6 +112,10 @@ signin = ttk.Frame(nb)
 swiper = ttk.Frame(nb)
 superUserAuth = ttk.Frame(nb)
 permissions = ttk.Frame(nb)
+signin.visible = False
+swiper.visible = False
+superUserAuth.visible = False
+permissions.visible = False
 
 #Sign-in frame
 signFrame = Frame(signin)
@@ -139,7 +135,7 @@ B3 = Label(addFrame, text = "First Name")
 C3 = Entry(addFrame, textvariable = firstname)
 B4 = Label(addFrame, text = "Last Name")
 C4 = Entry(addFrame, textvariable = lastname)
-A0 = Button(addFrame, text = "Add User", command = add_user(uidT.get(),uni.get(),lastname.get(),firstname.get(),userCnx), padx = 5, pady = 5)
+A0 = Button(addFrame, text = "Add User", command = add_user(uidT.get(),uni.get(),lastname.get(),firstname.get(),dict), padx = 5, pady = 5)
 B1.pack(side = TOP, expand = 1, fill = "both")
 C1.pack(side = TOP, expand = 1, fill = "both")
 B2.pack(side = TOP, expand = 1, fill = "both")

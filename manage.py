@@ -26,25 +26,25 @@ def change_permissions(uid, field, perm, dict):
         current_list = dict[uid]
 	if (field == user):
 		current_list[3] = perm
-	else if (field == drill):
+	elif (field == drill):
 		current_list[4] = perm
-	else if (field == mill):
+	elif (field == mill):
 		current_list[5] = perm
-	else if (field == sewing):
+	elif (field == sewing):
 		current_list[6] = perm
-	else if (field == printer):
+	elif (field == printer):
 		current_list[7] = perm
-	else if (field == solder):
+	elif (field == solder):
 		current_list[8] = perm
-	else if (field == oscope):
+	elif (field == oscope):
 		current_list[9] = perm
-	else if (field == vinyl):
+	elif (field == vinyl):
 		current_list[10] = perm
-	else if (field == laser):
+	elif (field == laser):
 		current_list[11] = perm
-	else if (field == super):
+	elif (field == super):
 		current_list[12] = perm
-	else if (field == banned):
+	elif (field == banned):
 		current_list[13] = perm
 	dict[uid] = current_list
     except:
@@ -82,25 +82,25 @@ def query_card(uni, field, dict):
         current_list = dict[uid]
 	if (field == user):
 		return current_list[3]
-	else if (field == drill):
+	elif (field == drill):
 		return current_list[4]
-	else if (field == mill):
+	elif (field == mill):
 		return current_list[5]
-	else if (field == sewing):
+	elif (field == sewing):
 		return current_list[6]
-	else if (field == printer):
+	elif (field == printer):
 		return current_list[7]
-	else if (field == solder):
+	elif (field == solder):
 		return current_list[8]
-	else if (field == oscope):
+	elif (field == oscope):
 		return current_list[9]
-	else if (field == vinyl):
+	elif (field == vinyl):
 		return current_list[10]
-	else if (field == laser):
+	elif (field == laser):
 		return current_list[11]
-	else if (field == super):
+	elif (field == super):
 		return current_list[12]
-	else if (field == banned):
+	elif (field == banned):
 		return current_list[13]
 	dict[uid] = current_list
     except:
